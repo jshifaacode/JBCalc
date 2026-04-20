@@ -131,11 +131,12 @@ body {
 
 .dev-name {
   font-family: 'Syne', sans-serif;
-  font-size: 1px;
+  font-size: 10px; /* Ukuran proporsional untuk sidebar footer */
   letter-spacing: 1px;
   color: var(--text-secondary);
   margin-bottom: 12px;
   text-transform: uppercase;
+  font-weight: 600; /* Tambahkan ini agar lebih jelas terbaca */
 }
 
 .social-links {
