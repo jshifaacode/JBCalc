@@ -1,0 +1,732 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JBCalc — Kalkulator Canggih dan Lengkap</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Background particles -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- App Shell -->
+    <div class="app-shell">
+      <!-- Sidebar Nav -->
+      <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+          <span class="logo-icon">⁒</span>
+          <span class="logo-text">JBCalc</span>
+        </div>
+        <ul class="nav-list">
+          <li
+            class="nav-item active"
+            data-tab="standard"
+            onclick="switchTab('standard', this)"
+          >
+            <span class="nav-icon">◻</span>
+            <span>Standard</span>
+          </li>
+          <li
+            class="nav-item"
+            data-tab="scientific"
+            onclick="switchTab('scientific', this)"
+          >
+            <span class="nav-icon">∑</span>
+            <span>Scientific</span>
+          </li>
+          <li
+            class="nav-item"
+            data-tab="currency"
+            onclick="switchTab('currency', this)"
+          >
+            <span class="nav-icon">₿</span>
+            <span>Mata Uang</span>
+          </li>
+          <li
+            class="nav-item"
+            data-tab="unit"
+            onclick="switchTab('unit', this)"
+          >
+            <span class="nav-icon">⇄</span>
+            <span>Konversi</span>
+          </li>
+          <li
+            class="nav-item"
+            data-tab="finance"
+            onclick="switchTab('finance', this)"
+          >
+            <span class="nav-icon">◈</span>
+            <span>Finansial</span>
+          </li>
+        </ul>
+        <div class="sidebar-footer">
+          <div class="theme-toggle" onclick="toggleTheme()">
+            <span id="theme-icon">◑</span>
+            <span id="theme-label">Dark Mode</span>
+          </div>
+          <div class="developer-info">
+            <div class="dev-name">by. JAYSHIFA BANYUWANA</div>
+            <div class="social-links">
+              <a
+                href="https://wa.me/qr/76WJORPVV2IDM1"
+                class="social-btn social-wa"
+                title="WhatsApp"
+                target="_blank"
+              >
+                <i class="fab fa-whatsapp"></i>
+              </a>
+              <a
+                href="https://instagram.com/jbanyu1a_"
+                class="social-btn social-ig"
+                title="Instagram"
+                target="_blank"
+              >
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a
+                href="mailto:jayshifabanyuwana@gmail.com"
+                class="social-btn social-mail"
+                title="Email"
+              >
+                <i class="fas fa-envelope"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Mobile Top Bar -->
+      <header class="mobile-header">
+        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
+        <span class="mobile-title" id="mobile-title">Standard</span>
+        <span class="logo-icon-sm">⁒</span>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- ===== STANDARD CALCULATOR ===== -->
+        <section class="tab-panel active" id="tab-standard">
+          <div class="calc-wrapper">
+            <div class="calc-display-area">
+              <div class="history-strip" id="std-history">
+                <span class="history-placeholder">Riwayat perhitungan...</span>
+              </div>
+              <div class="display-expr" id="std-expr"></div>
+              <div class="display-main" id="std-display">0</div>
+            </div>
+
+            <div class="keypad">
+              <!-- Row 1 -->
+              <button class="key key-fn" onclick="stdAction('percent')">
+                %
+              </button>
+              <button class="key key-fn" onclick="stdAction('ce')">CE</button>
+              <button class="key key-fn" onclick="stdAction('clear')">C</button>
+              <button class="key key-op" onclick="stdAction('backspace')">
+                ⌫
+              </button>
+
+              <!-- Row 2 -->
+              <button class="key key-fn" onclick="stdAction('inv')">¹/x</button>
+              <button class="key key-fn" onclick="stdAction('sq')">x²</button>
+              <button class="key key-fn" onclick="stdAction('sqrt')">√x</button>
+              <button
+                class="key key-op key-op-lg"
+                onclick="stdAction('op', '÷')"
+              >
+                ÷
+              </button>
+
+              <!-- Row 3 -->
+              <button class="key key-num" onclick="stdAction('num', '7')">
+                7
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '8')">
+                8
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '9')">
+                9
+              </button>
+              <button
+                class="key key-op key-op-lg"
+                onclick="stdAction('op', '×')"
+              >
+                ×
+              </button>
+
+              <!-- Row 4 -->
+              <button class="key key-num" onclick="stdAction('num', '4')">
+                4
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '5')">
+                5
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '6')">
+                6
+              </button>
+              <button
+                class="key key-op key-op-lg"
+                onclick="stdAction('op', '−')"
+              >
+                −
+              </button>
+
+              <!-- Row 5 -->
+              <button class="key key-num" onclick="stdAction('num', '1')">
+                1
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '2')">
+                2
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '3')">
+                3
+              </button>
+              <button
+                class="key key-op key-op-lg"
+                onclick="stdAction('op', '+')"
+              >
+                +
+              </button>
+
+              <!-- Row 6 -->
+              <button class="key key-fn" onclick="stdAction('sign')">
+                +/−
+              </button>
+              <button class="key key-num" onclick="stdAction('num', '0')">
+                0
+              </button>
+              <button class="key key-fn" onclick="stdAction('dot')">.</button>
+              <button class="key key-eq" onclick="stdAction('equal')">=</button>
+            </div>
+
+            <!-- Memory Panel -->
+            <div class="memory-panel">
+              <button class="mem-btn" onclick="memAction('mc')">MC</button>
+              <button class="mem-btn" onclick="memAction('mr')">MR</button>
+              <button class="mem-btn" onclick="memAction('m+')">M+</button>
+              <button class="mem-btn" onclick="memAction('m-')">M−</button>
+              <button class="mem-btn" onclick="memAction('ms')">MS</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== SCIENTIFIC CALCULATOR ===== -->
+        <section class="tab-panel" id="tab-scientific">
+          <div class="calc-wrapper sci-wrapper">
+            <div class="calc-display-area">
+              <div class="history-strip" id="sci-history">
+                <span class="history-placeholder">Mode: DEG | Riwayat...</span>
+              </div>
+              <div class="display-expr" id="sci-expr"></div>
+              <div class="display-main" id="sci-display">0</div>
+            </div>
+
+            <!-- Angle mode toggle -->
+            <div class="mode-toggle-row">
+              <button
+                class="mode-btn active"
+                id="btn-deg"
+                onclick="setAngleMode('DEG')"
+              >
+                DEG
+              </button>
+              <button
+                class="mode-btn"
+                id="btn-rad"
+                onclick="setAngleMode('RAD')"
+              >
+                RAD
+              </button>
+              <button
+                class="mode-btn"
+                id="btn-grad"
+                onclick="setAngleMode('GRAD')"
+              >
+                GRAD
+              </button>
+              <button class="mode-btn" id="btn-2nd" onclick="toggle2nd()">
+                2nd
+              </button>
+            </div>
+
+            <div class="keypad sci-keypad">
+              <!-- Sci row 1 -->
+              <button
+                class="key key-sci"
+                id="sci-sin"
+                onclick="sciAction('sin')"
+              >
+                sin
+              </button>
+              <button
+                class="key key-sci"
+                id="sci-cos"
+                onclick="sciAction('cos')"
+              >
+                cos
+              </button>
+              <button
+                class="key key-sci"
+                id="sci-tan"
+                onclick="sciAction('tan')"
+              >
+                tan
+              </button>
+              <button class="key key-sci" onclick="sciAction('log')">
+                log
+              </button>
+              <button class="key key-sci" onclick="sciAction('ln')">ln</button>
+
+              <!-- Sci row 2 -->
+              <button class="key key-sci" onclick="sciAction('pi')">π</button>
+              <button class="key key-sci" onclick="sciAction('e')">e</button>
+              <button class="key key-sci" onclick="sciAction('pow')">xʸ</button>
+              <button class="key key-sci" onclick="sciAction('exp10')">
+                10ˣ
+              </button>
+              <button class="key key-sci" onclick="sciAction('exp2')">
+                2ˣ
+              </button>
+
+              <!-- Sci row 3 -->
+              <button class="key key-sci" onclick="sciAction('openParen')">
+                (
+              </button>
+              <button class="key key-sci" onclick="sciAction('closeParen')">
+                )
+              </button>
+              <button class="key key-sci" onclick="sciAction('factorial')">
+                n!
+              </button>
+              <button class="key key-sci" onclick="sciAction('abs')">
+                |x|
+              </button>
+              <button class="key key-sci" onclick="sciAction('cbrt')">
+                ∛x
+              </button>
+
+              <!-- Sci row 4 – reuse standard keys -->
+              <button class="key key-fn" onclick="sciStd('percent')">%</button>
+              <button class="key key-fn" onclick="sciStd('clear')">C</button>
+              <button class="key key-fn" onclick="sciStd('backspace')">
+                ⌫
+              </button>
+              <button class="key key-op" onclick="sciStd('op', '÷')">÷</button>
+              <button class="key key-op" onclick="sciStd('op', '×')">×</button>
+
+              <button class="key key-num" onclick="sciStd('num', '7')">
+                7
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '8')">
+                8
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '9')">
+                9
+              </button>
+              <button class="key key-op" onclick="sciStd('op', '−')">−</button>
+              <button class="key key-fn" onclick="sciStd('sq')">x²</button>
+
+              <button class="key key-num" onclick="sciStd('num', '4')">
+                4
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '5')">
+                5
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '6')">
+                6
+              </button>
+              <button class="key key-op" onclick="sciStd('op', '+')">+</button>
+              <button class="key key-fn" onclick="sciStd('sqrt')">√x</button>
+
+              <button class="key key-num" onclick="sciStd('num', '1')">
+                1
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '2')">
+                2
+              </button>
+              <button class="key key-num" onclick="sciStd('num', '3')">
+                3
+              </button>
+              <button class="key key-fn" onclick="sciStd('sign')">±</button>
+              <button
+                class="key key-eq"
+                onclick="sciStd('equal')"
+                style="grid-row: span 2"
+              >
+                =
+              </button>
+
+              <button
+                class="key key-num"
+                onclick="sciStd('num', '0')"
+                style="grid-column: span 2"
+              >
+                0
+              </button>
+              <button class="key key-fn" onclick="sciStd('dot')">.</button>
+              <button class="key key-sci" onclick="sciStd('inv')">¹/x</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== CURRENCY CONVERSION ===== -->
+        <section class="tab-panel" id="tab-currency">
+          <div class="converter-card">
+            <div class="card-header">
+              <h2>Konversi Mata Uang</h2>
+              <p class="card-sub">Kurs diperbarui real-time</p>
+              <div class="live-badge" id="rate-status">● Live</div>
+            </div>
+
+            <div class="rate-info" id="rate-info-bar">
+              Memuat kurs terkini...
+            </div>
+
+            <div class="conv-row">
+              <div class="conv-field">
+                <label>Dari</label>
+                <select id="cur-from" onchange="convertCurrency()">
+                  <option value="USD">🇺🇸 USD – Dolar AS</option>
+                  <option value="IDR" selected>🇮🇩 IDR – Rupiah</option>
+                  <option value="EUR">🇪🇺 EUR – Euro</option>
+                  <option value="GBP">🇬🇧 GBP – Pound Sterling</option>
+                  <option value="JPY">🇯🇵 JPY – Yen Jepang</option>
+                  <option value="SGD">🇸🇬 SGD – Dolar Singapura</option>
+                  <option value="MYR">🇲🇾 MYR – Ringgit Malaysia</option>
+                  <option value="AUD">🇦🇺 AUD – Dolar Australia</option>
+                  <option value="CNY">🇨🇳 CNY – Yuan China</option>
+                  <option value="KRW">🇰🇷 KRW – Won Korea</option>
+                  <option value="SAR">🇸🇦 SAR – Riyal Arab</option>
+                  <option value="AED">🇦🇪 AED – Dirham UAE</option>
+                  <option value="THB">🇹🇭 THB – Baht Thailand</option>
+                  <option value="BTC">₿ BTC – Bitcoin</option>
+                  <option value="ETH">Ξ ETH – Ethereum</option>
+                </select>
+                <input
+                  type="number"
+                  id="cur-amount"
+                  value="1"
+                  oninput="convertCurrency()"
+                  placeholder="Jumlah"
+                />
+              </div>
+
+              <button class="swap-btn" onclick="swapCurrency()">⇄</button>
+
+              <div class="conv-field">
+                <label>Ke</label>
+                <select id="cur-to" onchange="convertCurrency()">
+                  <option value="USD" selected>🇺🇸 USD – Dolar AS</option>
+                  <option value="IDR">🇮🇩 IDR – Rupiah</option>
+                  <option value="EUR">🇪🇺 EUR – Euro</option>
+                  <option value="GBP">🇬🇧 GBP – Pound Sterling</option>
+                  <option value="JPY">🇯🇵 JPY – Yen Jepang</option>
+                  <option value="SGD">🇸🇬 SGD – Dolar Singapura</option>
+                  <option value="MYR">🇲🇾 MYR – Ringgit Malaysia</option>
+                  <option value="AUD">🇦🇺 AUD – Dolar Australia</option>
+                  <option value="CNY">🇨🇳 CNY – Yuan China</option>
+                  <option value="KRW">🇰🇷 KRW – Won Korea</option>
+                  <option value="SAR">🇸🇦 SAR – Riyal Arab</option>
+                  <option value="AED">🇦🇪 AED – Dirham UAE</option>
+                  <option value="THB">🇹🇭 THB – Baht Thailand</option>
+                  <option value="BTC">₿ BTC – Bitcoin</option>
+                  <option value="ETH">Ξ ETH – Ethereum</option>
+                </select>
+                <div class="result-display" id="cur-result">–</div>
+              </div>
+            </div>
+
+            <div class="rate-table" id="rate-table">
+              <h3>Kurs Populer terhadap IDR</h3>
+              <div class="rate-grid" id="rate-grid">Memuat...</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== UNIT CONVERSION ===== -->
+        <section class="tab-panel" id="tab-unit">
+          <div class="converter-card">
+            <div class="card-header">
+              <h2>Konversi Satuan</h2>
+              <p class="card-sub">Suhu, Panjang, Berat, Volume, dan lainnya</p>
+            </div>
+
+            <div class="unit-category-row">
+              <button
+                class="cat-btn active"
+                onclick="setUnitCat('temperature', this)"
+              >
+                🌡 Suhu
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('length', this)">
+                📏 Panjang
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('weight', this)">
+                ⚖ Berat
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('volume', this)">
+                🫙 Volume
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('area', this)">
+                ⬛ Luas
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('speed', this)">
+                💨 Kecepatan
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('data', this)">
+                💾 Data
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('time', this)">
+                ⏱ Waktu
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('energy', this)">
+                ⚡ Energi
+              </button>
+              <button class="cat-btn" onclick="setUnitCat('pressure', this)">
+                🔵 Tekanan
+              </button>
+            </div>
+
+            <div class="unit-converter-body">
+              <div class="conv-row">
+                <div class="conv-field">
+                  <label>Dari</label>
+                  <select id="unit-from" onchange="convertUnit()"></select>
+                  <input
+                    type="number"
+                    id="unit-amount"
+                    value="1"
+                    oninput="convertUnit()"
+                  />
+                </div>
+                <button class="swap-btn" onclick="swapUnit()">⇄</button>
+                <div class="conv-field">
+                  <label>Ke</label>
+                  <select id="unit-to" onchange="convertUnit()"></select>
+                  <div class="result-display" id="unit-result">–</div>
+                </div>
+              </div>
+
+              <div class="unit-formula" id="unit-formula"></div>
+
+              <div class="unit-table-wrap">
+                <h3 id="unit-table-title">Tabel Konversi Suhu</h3>
+                <div class="unit-table" id="unit-table"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ===== FINANCIAL CALCULATOR ===== -->
+        <section class="tab-panel" id="tab-finance">
+          <div class="converter-card">
+            <div class="card-header">
+              <h2>Kalkulator Finansial</h2>
+              <p class="card-sub">Investasi, Kredit, Bunga, dan Lainnya</p>
+            </div>
+
+            <div class="fin-tabs">
+              <button class="fin-tab active" onclick="setFinTab('loan', this)">
+                🏦 Kredit/KPR
+              </button>
+              <button class="fin-tab" onclick="setFinTab('compound', this)">
+                📈 Bunga Majemuk
+              </button>
+              <button class="fin-tab" onclick="setFinTab('roi', this)">
+                💰 ROI
+              </button>
+              <button class="fin-tab" onclick="setFinTab('discount', this)">
+                🏷 Diskon
+              </button>
+              <button class="fin-tab" onclick="setFinTab('tax', this)">
+                📋 Pajak PPN
+              </button>
+              <button class="fin-tab" onclick="setFinTab('bmi', this)">
+                ⚖ BMI
+              </button>
+            </div>
+
+            <!-- Loan Calculator -->
+            <div class="fin-panel active" id="fin-loan">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Jumlah Pinjaman (Rp)</label>
+                  <input
+                    type="number"
+                    id="loan-amount"
+                    placeholder="500000000"
+                    value="500000000"
+                  />
+                </div>
+                <div class="fin-field">
+                  <label>Suku Bunga per Tahun (%)</label>
+                  <input
+                    type="number"
+                    id="loan-rate"
+                    placeholder="10"
+                    value="10"
+                    step="0.1"
+                  />
+                </div>
+                <div class="fin-field">
+                  <label>Tenor (Bulan)</label>
+                  <input
+                    type="number"
+                    id="loan-term"
+                    placeholder="60"
+                    value="60"
+                  />
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcLoan()">
+                Hitung Angsuran
+              </button>
+              <div class="fin-result" id="loan-result"></div>
+            </div>
+
+            <!-- Compound Interest -->
+            <div class="fin-panel" id="fin-compound">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Modal Awal (Rp)</label>
+                  <input type="number" id="ci-principal" value="10000000" />
+                </div>
+                <div class="fin-field">
+                  <label>Bunga per Tahun (%)</label>
+                  <input type="number" id="ci-rate" value="8" step="0.1" />
+                </div>
+                <div class="fin-field">
+                  <label>Periode (Tahun)</label>
+                  <input type="number" id="ci-years" value="10" />
+                </div>
+                <div class="fin-field">
+                  <label>Frekuensi Bunga / Tahun</label>
+                  <select id="ci-freq">
+                    <option value="1">Tahunan</option>
+                    <option value="2">Semi-Tahunan</option>
+                    <option value="4">Kuartalan</option>
+                    <option value="12" selected>Bulanan</option>
+                    <option value="365">Harian</option>
+                  </select>
+                </div>
+                <div class="fin-field">
+                  <label>Setoran Rutin / Periode (Rp)</label>
+                  <input type="number" id="ci-deposit" value="500000" />
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcCompound()">
+                Hitung Investasi
+              </button>
+              <div class="fin-result" id="compound-result"></div>
+            </div>
+
+            <!-- ROI -->
+            <div class="fin-panel" id="fin-roi">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Nilai Investasi Awal (Rp)</label>
+                  <input type="number" id="roi-initial" value="10000000" />
+                </div>
+                <div class="fin-field">
+                  <label>Nilai Investasi Akhir (Rp)</label>
+                  <input type="number" id="roi-final" value="15000000" />
+                </div>
+                <div class="fin-field">
+                  <label>Durasi (Tahun)</label>
+                  <input type="number" id="roi-years" value="3" />
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcROI()">Hitung ROI</button>
+              <div class="fin-result" id="roi-result"></div>
+            </div>
+
+            <!-- Discount -->
+            <div class="fin-panel" id="fin-discount">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Harga Asli (Rp)</label>
+                  <input type="number" id="disc-original" value="500000" />
+                </div>
+                <div class="fin-field">
+                  <label>Diskon (%)</label>
+                  <input
+                    type="number"
+                    id="disc-percent"
+                    value="20"
+                    step="0.1"
+                  />
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcDiscount()">
+                Hitung Diskon
+              </button>
+              <div class="fin-result" id="discount-result"></div>
+            </div>
+
+            <!-- Tax PPN -->
+            <div class="fin-panel" id="fin-tax">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Harga Sebelum Pajak (Rp)</label>
+                  <input type="number" id="tax-before" value="1000000" />
+                </div>
+                <div class="fin-field">
+                  <label>Tarif PPN (%)</label>
+                  <input type="number" id="tax-rate" value="11" step="0.1" />
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcTax()">Hitung Pajak</button>
+              <div class="fin-result" id="tax-result"></div>
+            </div>
+
+            <!-- BMI -->
+            <div class="fin-panel" id="fin-bmi">
+              <div class="fin-grid">
+                <div class="fin-field">
+                  <label>Berat Badan (kg)</label>
+                  <input type="number" id="bmi-weight" value="70" step="0.1" />
+                </div>
+                <div class="fin-field">
+                  <label>Tinggi Badan (cm)</label>
+                  <input type="number" id="bmi-height" value="170" step="0.1" />
+                </div>
+                <div class="fin-field">
+                  <label>Usia (Tahun)</label>
+                  <input type="number" id="bmi-age" value="25" />
+                </div>
+                <div class="fin-field">
+                  <label>Jenis Kelamin</label>
+                  <select id="bmi-gender">
+                    <option value="male">Laki-laki</option>
+                    <option value="female">Perempuan</option>
+                  </select>
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcBMI()">Hitung BMI</button>
+              <div class="fin-result" id="bmi-result"></div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script src="scripts/app.js"></script>
+    <script src="scripts/currency.js"></script>
+    <script src="scripts/units.js"></script>
+    <script src="scripts/finance.js"></script>
+    <script src="scripts/particles.js"></script>
+  </body>
+</html>
