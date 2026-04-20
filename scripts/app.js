@@ -1,9 +1,4 @@
-/* ============================================================
-   CalcPro — app.js
-   Standard + Scientific Calculator Logic + Navigation
-   ============================================================ */
 
-// ── State ──────────────────────────────────────────────────
 let stdState = {
   current: '0',
   prev: '',
@@ -503,3 +498,24 @@ window.addEventListener('DOMContentLoaded', () => {
   updateStdDisplay();
   updateSciDisplay();
 });
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebar-overlay');
+  
+  sidebar.classList.remove('open');
+  if (overlay) overlay.classList.remove('show');
+  
+  sidebarOpen = false;
+  document.body.style.overflow = ''; // Mengaktifkan scroll kembali
+}
+
+
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  if (sidebar.classList.contains('open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+}
