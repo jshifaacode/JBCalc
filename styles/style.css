@@ -1002,174 +1002,137 @@ body {
   transform-origin: center;
 }
 
-/* ── Responsive ── */
+/* ── FULL RESPONSIVE ENGINE ── */
 @media (max-width: 768px) {
+  /* 1. Sidebar & Shell */
   .sidebar {
-    position: fixed; /* Tambahkan ini */
-    left: 0;         /* Tambahkan ini */
-    transform: translateX(-100%);
-    z-index: 9999; /* Tetap tinggi */
-    background: var(--bg-surface) !important; /* Pastikan tidak transparan */
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    top: 0;
+    position: fixed;
+    left: 0; top: 0;
     height: 100%;
-    width: 260px;    /* Pastikan lebar terdefinisi */
-    overflow-y: auto;
+    width: 260px;
+    transform: translateX(-100%);
+    z-index: 9999;
+    background: var(--bg-surface) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  .sidebar.open {
-    transform: translateX(0);
-    box-shadow: 8px 0 40px rgba(0,0,0,0.6);
-  }
+  .sidebar.open { transform: translateX(0); box-shadow: 8px 0 40px rgba(0,0,0,0.6); }
 
-  .mobile-header {
-    display: flex;
-    z-index: 200;
-  }
-
-  .menu-btn {
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    background: var(--bg-key);
-    border: 1px solid var(--border);
-    font-size: 18px;
-    color: var(--text-primary);
-    cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .menu-btn:active {
-    background: var(--bg-key-hover);
-    transform: scale(0.95);
-  }
+  .mobile-header { display: flex; z-index: 200; }
 
   .main-content {
     margin-left: 0;
-    padding: 68px 12px 32px;
-    min-height: 100vh;
+    padding: 80px 16px 40px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
-  .tab-panel { max-width: 100%; }
+  /* 2. Fix Konversi Satuan (Berdasarkan Gambar) */
+  .conv-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Kita atur manual gap-nya agar rapat */
+  }
 
+  /* Membungkus Label, Select, dan Input dalam satu grup rapi */
+  .conv-field {
+    background: var(--bg-key);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    box-sizing: border-box;
+  }
+
+  /* Menghilangkan gaya default agar menyatu dengan background grup */
+  .conv-field select, 
+  .conv-field input[type="number"],
+  .result-display {
+    background: transparent !important;
+    border: none !important;
+    padding: 8px 0 !important;
+    height: auto !important;
+    font-size: 16px !important;
+    width: 100%;
+    box-shadow: none !important;
+    color: var(--text-primary);
+  }
+
+  /* Garis halus pemisah antara Select dan Input */
+  .conv-field select {
+    border-bottom: 1px solid var(--border) !important;
+    border-radius: 0;
+    color: var(--accent); /* Warna teks unit agar beda dengan angka */
+    font-weight: 600;
+  }
+
+  .conv-field label {
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    margin-bottom: 2px;
+  }
+
+  /* 3. Tombol Swap Tengah */
+  .swap-btn {
+    align-self: center;
+    margin: -15px 0; /* Menarik kotak atas & bawah agar tombol tumpang tindih rapi */
+    z-index: 5;
+    background: var(--bg-surface);
+    border: 2px solid var(--bg-base);
+    transform: rotate(90deg);
+    width: 40px;
+    height: 40px;
+  }
+
+  /* 4. Finansial Grid */
+  .fin-grid {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .fin-field {
+    width: 100%;
+  }
+
+  /* 5. Kalkulator & Keypad */
   .calc-wrapper { padding: 12px; }
-
   .display-main { font-size: 32px; }
-
-  .calc-display-area {
-    min-height: 90px;
-    padding: 12px 14px;
-  }
-
-  .keypad {
-    gap: 6px;
-    grid-template-columns: repeat(4, 1fr);
-  }
-
-  .key {
-    font-size: 15px;
-    border-radius: 10px;
-    min-height: 52px;
-    -webkit-tap-highlight-color: transparent;
-  }
-
-  .key-sci {
-    min-height: 44px;
-    font-size: 12px;
-  }
+  
+  .keypad { gap: 6px; }
+  .key { min-height: 54px; font-size: 16px; }
 
   .sci-keypad {
     grid-template-columns: repeat(5, 1fr);
-    gap: 5px;
+    gap: 4px;
   }
+  .key-sci { font-size: 11px; padding: 10px 2px; }
 
-  .mode-toggle-row { gap: 4px; }
-
-  .mode-btn {
-    font-size: 10px;
-    padding: 6px 4px;
-  }
-
-  .memory-panel { gap: 4px; }
-
-  .mem-btn {
-    font-size: 10px;
-    padding: 6px 2px;
-  }
-
-  .converter-card {
-    padding: 16px;
-    border-radius: 16px;
-  }
-
-  .card-header h2 { font-size: 20px; }
-
-  .conv-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .swap-btn {
-    align-self: center;
-    transform: rotate(90deg);
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
-  }
-
-  .swap-btn:hover { transform: rotate(270deg) scale(1.05); }
-
-  .unit-category-row {
-    gap: 5px;
-  }
-
-  .cat-btn {
-    padding: 6px 10px;
-    font-size: 11px;
-  }
-
-  .fin-grid { grid-template-columns: 1fr; }
-
-  .fin-tabs { gap: 5px; }
-
-  .fin-tab {
-    padding: 6px 10px;
-    font-size: 11px;
-  }
-
-  .rate-grid { grid-template-columns: repeat(2, 1fr); }
-
-  .unit-table {
+  /* 6. Chips & Tables */
+  .unit-table, .rate-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
   }
 
-  /* Nav items lebih mudah di-tap */
-  .nav-item {
-    padding: 14px 14px;
-    font-size: 15px;
-    min-height: 50px;
+  .cat-btn, .fin-tab {
+    padding: 8px 12px;
+    font-size: 11px;
+    white-space: nowrap;
   }
-
-  .nav-icon { font-size: 20px; }
 }
 
-/* ── Layar sangat kecil (< 380px) ── */
-@media (max-width: 380px) {
-  .key { font-size: 13px; min-height: 46px; }
-  .display-main { font-size: 28px; }
-  .sci-keypad { gap: 3px; }
-  .key-sci { font-size: 10px; min-height: 38px; }
-  .fin-tab { padding: 5px 8px; font-size: 10px; }
-  .cat-btn { padding: 5px 8px; font-size: 10px; }
+/* ── EXTRA SMALL SCREEN (< 480px) ── */
+@media (max-width: 480px) {
+  .unit-table { grid-template-columns: 1fr; }
+  .display-main { font-size: 26px; }
+  .card-header h2 { font-size: 18px; }
+  
+  .conv-field { padding: 12px; }
+  .result-display { font-size: 22px !important; }
 }
-
-/* ── Tab wider view ── */
-#tab-currency .tab-panel,
-#tab-unit .tab-panel,
-#tab-finance .tab-panel {
-  max-width: 720px;
-}
-
