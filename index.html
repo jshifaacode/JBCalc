@@ -1,733 +1,576 @@
 <!doctype html>
-<html lang="id">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>JBCalc — Kalkulator Canggih dan Lengkap</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="styles/style.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-  </head>
-  <body>
-    <!-- Background particles -->
-    <canvas id="bg-canvas"></canvas>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <title>JBCalc — Ultra Modern Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link rel="stylesheet" href="styles/style.css"/>
+</head>
+<body>
 
-    <!-- App Shell -->
-    <div class="app-shell">
-      <!-- Sidebar Nav -->
-      <nav class="sidebar" id="sidebar">
-        <button class="close-sidebar-btn" onclick="closeSidebar()">×</button>
-        <div class="sidebar-logo">
-          <span class="logo-icon">⁒</span>
-          <span class="logo-text">JBCalc</span>
-        </div>
-        <ul class="nav-list">
-          <li
-            class="nav-item active"
-            data-tab="standard"
-            onclick="switchTab('standard', this)"
-          >
-            <span class="nav-icon">◻</span>
-            <span>Standard</span>
-          </li>
-          <li
-            class="nav-item"
-            data-tab="scientific"
-            onclick="switchTab('scientific', this)"
-          >
-            <span class="nav-icon">∑</span>
-            <span>Scientific</span>
-          </li>
-          <li
-            class="nav-item"
-            data-tab="currency"
-            onclick="switchTab('currency', this)"
-          >
-            <span class="nav-icon">₿</span>
-            <span>Mata Uang</span>
-          </li>
-          <li
-            class="nav-item"
-            data-tab="unit"
-            onclick="switchTab('unit', this)"
-          >
-            <span class="nav-icon">⇄</span>
-            <span>Konversi</span>
-          </li>
-          <li
-            class="nav-item"
-            data-tab="finance"
-            onclick="switchTab('finance', this)"
-          >
-            <span class="nav-icon">◈</span>
-            <span>Finansial</span>
-          </li>
-        </ul>
-        <div class="sidebar-footer">
-          <div class="theme-toggle" onclick="toggleTheme()">
-            <span id="theme-icon">◑</span>
-            <span id="theme-label">Dark Mode</span>
-          </div>
-          <div class="developer-info">
-            <div class="dev-name">by. JAYSHIFA BANYUWANA</div>
-            <div class="social-links">
-              <a
-                href="https://wa.me/qr/76WJORPVV2IDM1"
-                class="social-btn social-wa"
-                title="WhatsApp"
-                target="_blank"
-              >
-                <i class="fab fa-whatsapp"></i>
-              </a>
-              <a
-                href="https://instagram.com/jbanyu1a_"
-                class="social-btn social-ig"
-                title="Instagram"
-                target="_blank"
-              >
-                <i class="fab fa-instagram"></i>
-              </a>
-              <a
-                href="mailto:jayshifabanyuwana@gmail.com"
-                class="social-btn social-mail"
-                title="Email"
-              >
-                <i class="fas fa-envelope"></i>
-              </a>
-            </div>
-          </div>
-        </div>
-      </nav>
+<canvas id="aurora-canvas"></canvas>
+<div id="cursor-glow"></div>
 
-      <!-- Mobile Top Bar -->
-      <header class="mobile-header">
-        <button class="menu-btn" onclick="toggleSidebar()">☰</button>
-        <span class="mobile-title" id="mobile-title">Standard</span>
-        <span class="logo-icon-sm">⁒</span>
-      </header>
+<div class="app-shell" id="appShell">
 
-      <!-- Main Content -->
-      <main class="main-content">
-        <!-- ===== STANDARD CALCULATOR ===== -->
-        <section class="tab-panel active" id="tab-standard">
-          <div class="calc-wrapper">
-            <div class="calc-display-area">
-              <div class="history-strip" id="std-history">
-                <span class="history-placeholder">Riwayat perhitungan...</span>
-              </div>
-              <div class="display-expr" id="std-expr"></div>
-              <div class="display-main" id="std-display">0</div>
-            </div>
-
-            <div class="keypad">
-              <!-- Row 1 -->
-              <button class="key key-fn" onclick="stdAction('percent')">
-                %
-              </button>
-              <button class="key key-fn" onclick="stdAction('ce')">CE</button>
-              <button class="key key-fn" onclick="stdAction('clear')">C</button>
-              <button class="key key-op" onclick="stdAction('backspace')">
-                ⌫
-              </button>
-
-              <!-- Row 2 -->
-              <button class="key key-fn" onclick="stdAction('inv')">¹/x</button>
-              <button class="key key-fn" onclick="stdAction('sq')">x²</button>
-              <button class="key key-fn" onclick="stdAction('sqrt')">√x</button>
-              <button
-                class="key key-op key-op-lg"
-                onclick="stdAction('op', '÷')"
-              >
-                ÷
-              </button>
-
-              <!-- Row 3 -->
-              <button class="key key-num" onclick="stdAction('num', '7')">
-                7
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '8')">
-                8
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '9')">
-                9
-              </button>
-              <button
-                class="key key-op key-op-lg"
-                onclick="stdAction('op', '×')"
-              >
-                ×
-              </button>
-
-              <!-- Row 4 -->
-              <button class="key key-num" onclick="stdAction('num', '4')">
-                4
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '5')">
-                5
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '6')">
-                6
-              </button>
-              <button
-                class="key key-op key-op-lg"
-                onclick="stdAction('op', '−')"
-              >
-                −
-              </button>
-
-              <!-- Row 5 -->
-              <button class="key key-num" onclick="stdAction('num', '1')">
-                1
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '2')">
-                2
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '3')">
-                3
-              </button>
-              <button
-                class="key key-op key-op-lg"
-                onclick="stdAction('op', '+')"
-              >
-                +
-              </button>
-
-              <!-- Row 6 -->
-              <button class="key key-fn" onclick="stdAction('sign')">
-                +/−
-              </button>
-              <button class="key key-num" onclick="stdAction('num', '0')">
-                0
-              </button>
-              <button class="key key-fn" onclick="stdAction('dot')">.</button>
-              <button class="key key-eq" onclick="stdAction('equal')">=</button>
-            </div>
-
-            <!-- Memory Panel -->
-            <div class="memory-panel">
-              <button class="mem-btn" onclick="memAction('mc')">MC</button>
-              <button class="mem-btn" onclick="memAction('mr')">MR</button>
-              <button class="mem-btn" onclick="memAction('m+')">M+</button>
-              <button class="mem-btn" onclick="memAction('m-')">M−</button>
-              <button class="mem-btn" onclick="memAction('ms')">MS</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== SCIENTIFIC CALCULATOR ===== -->
-        <section class="tab-panel" id="tab-scientific">
-          <div class="calc-wrapper sci-wrapper">
-            <div class="calc-display-area">
-              <div class="history-strip" id="sci-history">
-                <span class="history-placeholder">Mode: DEG | Riwayat...</span>
-              </div>
-              <div class="display-expr" id="sci-expr"></div>
-              <div class="display-main" id="sci-display">0</div>
-            </div>
-
-            <!-- Angle mode toggle -->
-            <div class="mode-toggle-row">
-              <button
-                class="mode-btn active"
-                id="btn-deg"
-                onclick="setAngleMode('DEG')"
-              >
-                DEG
-              </button>
-              <button
-                class="mode-btn"
-                id="btn-rad"
-                onclick="setAngleMode('RAD')"
-              >
-                RAD
-              </button>
-              <button
-                class="mode-btn"
-                id="btn-grad"
-                onclick="setAngleMode('GRAD')"
-              >
-                GRAD
-              </button>
-              <button class="mode-btn" id="btn-2nd" onclick="toggle2nd()">
-                2nd
-              </button>
-            </div>
-
-            <div class="keypad sci-keypad">
-              <!-- Sci row 1 -->
-              <button
-                class="key key-sci"
-                id="sci-sin"
-                onclick="sciAction('sin')"
-              >
-                sin
-              </button>
-              <button
-                class="key key-sci"
-                id="sci-cos"
-                onclick="sciAction('cos')"
-              >
-                cos
-              </button>
-              <button
-                class="key key-sci"
-                id="sci-tan"
-                onclick="sciAction('tan')"
-              >
-                tan
-              </button>
-              <button class="key key-sci" onclick="sciAction('log')">
-                log
-              </button>
-              <button class="key key-sci" onclick="sciAction('ln')">ln</button>
-
-              <!-- Sci row 2 -->
-              <button class="key key-sci" onclick="sciAction('pi')">π</button>
-              <button class="key key-sci" onclick="sciAction('e')">e</button>
-              <button class="key key-sci" onclick="sciAction('pow')">xʸ</button>
-              <button class="key key-sci" onclick="sciAction('exp10')">
-                10ˣ
-              </button>
-              <button class="key key-sci" onclick="sciAction('exp2')">
-                2ˣ
-              </button>
-
-              <!-- Sci row 3 -->
-              <button class="key key-sci" onclick="sciAction('openParen')">
-                (
-              </button>
-              <button class="key key-sci" onclick="sciAction('closeParen')">
-                )
-              </button>
-              <button class="key key-sci" onclick="sciAction('factorial')">
-                n!
-              </button>
-              <button class="key key-sci" onclick="sciAction('abs')">
-                |x|
-              </button>
-              <button class="key key-sci" onclick="sciAction('cbrt')">
-                ∛x
-              </button>
-
-              <!-- Sci row 4 – reuse standard keys -->
-              <button class="key key-fn" onclick="sciStd('percent')">%</button>
-              <button class="key key-fn" onclick="sciStd('clear')">C</button>
-              <button class="key key-fn" onclick="sciStd('backspace')">
-                ⌫
-              </button>
-              <button class="key key-op" onclick="sciStd('op', '÷')">÷</button>
-              <button class="key key-op" onclick="sciStd('op', '×')">×</button>
-
-              <button class="key key-num" onclick="sciStd('num', '7')">
-                7
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '8')">
-                8
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '9')">
-                9
-              </button>
-              <button class="key key-op" onclick="sciStd('op', '−')">−</button>
-              <button class="key key-fn" onclick="sciStd('sq')">x²</button>
-
-              <button class="key key-num" onclick="sciStd('num', '4')">
-                4
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '5')">
-                5
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '6')">
-                6
-              </button>
-              <button class="key key-op" onclick="sciStd('op', '+')">+</button>
-              <button class="key key-fn" onclick="sciStd('sqrt')">√x</button>
-
-              <button class="key key-num" onclick="sciStd('num', '1')">
-                1
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '2')">
-                2
-              </button>
-              <button class="key key-num" onclick="sciStd('num', '3')">
-                3
-              </button>
-              <button class="key key-fn" onclick="sciStd('sign')">±</button>
-              <button
-                class="key key-eq"
-                onclick="sciStd('equal')"
-                style="grid-row: span 2"
-              >
-                =
-              </button>
-
-              <button
-                class="key key-num"
-                onclick="sciStd('num', '0')"
-                style="grid-column: span 2"
-              >
-                0
-              </button>
-              <button class="key key-fn" onclick="sciStd('dot')">.</button>
-              <button class="key key-sci" onclick="sciStd('inv')">¹/x</button>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== CURRENCY CONVERSION ===== -->
-        <section class="tab-panel" id="tab-currency">
-          <div class="converter-card">
-            <div class="card-header">
-              <h2>Konversi Mata Uang</h2>
-              <p class="card-sub">Kurs diperbarui real-time</p>
-              <div class="live-badge" id="rate-status">● Live</div>
-            </div>
-
-            <div class="rate-info" id="rate-info-bar">
-              Memuat kurs terkini...
-            </div>
-
-            <div class="conv-row">
-              <div class="conv-field">
-                <label>Dari</label>
-                <select id="cur-from" onchange="convertCurrency()">
-                  <option value="USD">🇺🇸 USD – Dolar AS</option>
-                  <option value="IDR" selected>🇮🇩 IDR – Rupiah</option>
-                  <option value="EUR">🇪🇺 EUR – Euro</option>
-                  <option value="GBP">🇬🇧 GBP – Pound Sterling</option>
-                  <option value="JPY">🇯🇵 JPY – Yen Jepang</option>
-                  <option value="SGD">🇸🇬 SGD – Dolar Singapura</option>
-                  <option value="MYR">🇲🇾 MYR – Ringgit Malaysia</option>
-                  <option value="AUD">🇦🇺 AUD – Dolar Australia</option>
-                  <option value="CNY">🇨🇳 CNY – Yuan China</option>
-                  <option value="KRW">🇰🇷 KRW – Won Korea</option>
-                  <option value="SAR">🇸🇦 SAR – Riyal Arab</option>
-                  <option value="AED">🇦🇪 AED – Dirham UAE</option>
-                  <option value="THB">🇹🇭 THB – Baht Thailand</option>
-                  <option value="BTC">₿ BTC – Bitcoin</option>
-                  <option value="ETH">Ξ ETH – Ethereum</option>
-                </select>
-                <input
-                  type="number"
-                  id="cur-amount"
-                  value="1"
-                  oninput="convertCurrency()"
-                  placeholder="Jumlah"
-                />
-              </div>
-
-              <button class="swap-btn" onclick="swapCurrency()">⇄</button>
-
-              <div class="conv-field">
-                <label>Ke</label>
-                <select id="cur-to" onchange="convertCurrency()">
-                  <option value="USD" selected>🇺🇸 USD – Dolar AS</option>
-                  <option value="IDR">🇮🇩 IDR – Rupiah</option>
-                  <option value="EUR">🇪🇺 EUR – Euro</option>
-                  <option value="GBP">🇬🇧 GBP – Pound Sterling</option>
-                  <option value="JPY">🇯🇵 JPY – Yen Jepang</option>
-                  <option value="SGD">🇸🇬 SGD – Dolar Singapura</option>
-                  <option value="MYR">🇲🇾 MYR – Ringgit Malaysia</option>
-                  <option value="AUD">🇦🇺 AUD – Dolar Australia</option>
-                  <option value="CNY">🇨🇳 CNY – Yuan China</option>
-                  <option value="KRW">🇰🇷 KRW – Won Korea</option>
-                  <option value="SAR">🇸🇦 SAR – Riyal Arab</option>
-                  <option value="AED">🇦🇪 AED – Dirham UAE</option>
-                  <option value="THB">🇹🇭 THB – Baht Thailand</option>
-                  <option value="BTC">₿ BTC – Bitcoin</option>
-                  <option value="ETH">Ξ ETH – Ethereum</option>
-                </select>
-                <div class="result-display" id="cur-result">–</div>
-              </div>
-            </div>
-
-            <div class="rate-table" id="rate-table">
-              <h3>Kurs Populer terhadap IDR</h3>
-              <div class="rate-grid" id="rate-grid">Memuat...</div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== UNIT CONVERSION ===== -->
-        <section class="tab-panel" id="tab-unit">
-          <div class="converter-card">
-            <div class="card-header">
-              <h2>Konversi Satuan</h2>
-              <p class="card-sub">Suhu, Panjang, Berat, Volume, dan lainnya</p>
-            </div>
-
-            <div class="unit-category-row">
-              <button
-                class="cat-btn active"
-                onclick="setUnitCat('temperature', this)"
-              >
-                🌡 Suhu
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('length', this)">
-                📏 Panjang
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('weight', this)">
-                ⚖ Berat
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('volume', this)">
-                🫙 Volume
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('area', this)">
-                ⬛ Luas
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('speed', this)">
-                💨 Kecepatan
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('data', this)">
-                💾 Data
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('time', this)">
-                ⏱ Waktu
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('energy', this)">
-                ⚡ Energi
-              </button>
-              <button class="cat-btn" onclick="setUnitCat('pressure', this)">
-                🔵 Tekanan
-              </button>
-            </div>
-
-            <div class="unit-converter-body">
-              <div class="conv-row">
-                <div class="conv-field">
-                  <label>Dari</label>
-                  <select id="unit-from" onchange="convertUnit()"></select>
-                  <input
-                    type="number"
-                    id="unit-amount"
-                    value="1"
-                    oninput="convertUnit()"
-                  />
-                </div>
-                <button class="swap-btn" onclick="swapUnit()">⇄</button>
-                <div class="conv-field">
-                  <label>Ke</label>
-                  <select id="unit-to" onchange="convertUnit()"></select>
-                  <div class="result-display" id="unit-result">–</div>
-                </div>
-              </div>
-
-              <div class="unit-formula" id="unit-formula"></div>
-
-              <div class="unit-table-wrap">
-                <h3 id="unit-table-title">Tabel Konversi Suhu</h3>
-                <div class="unit-table" id="unit-table"></div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <!-- ===== FINANCIAL CALCULATOR ===== -->
-        <section class="tab-panel" id="tab-finance">
-          <div class="converter-card">
-            <div class="card-header">
-              <h2>Kalkulator Finansial</h2>
-              <p class="card-sub">Investasi, Kredit, Bunga, dan Lainnya</p>
-            </div>
-
-            <div class="fin-tabs">
-              <button class="fin-tab active" onclick="setFinTab('loan', this)">
-                🏦 Kredit/KPR
-              </button>
-              <button class="fin-tab" onclick="setFinTab('compound', this)">
-                📈 Bunga Majemuk
-              </button>
-              <button class="fin-tab" onclick="setFinTab('roi', this)">
-                💰 ROI
-              </button>
-              <button class="fin-tab" onclick="setFinTab('discount', this)">
-                🏷 Diskon
-              </button>
-              <button class="fin-tab" onclick="setFinTab('tax', this)">
-                📋 Pajak PPN
-              </button>
-              <button class="fin-tab" onclick="setFinTab('bmi', this)">
-                ⚖ BMI
-              </button>
-            </div>
-
-            <!-- Loan Calculator -->
-            <div class="fin-panel active" id="fin-loan">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Jumlah Pinjaman (Rp)</label>
-                  <input
-                    type="number"
-                    id="loan-amount"
-                    placeholder="500000000"
-                    value="500000000"
-                  />
-                </div>
-                <div class="fin-field">
-                  <label>Suku Bunga per Tahun (%)</label>
-                  <input
-                    type="number"
-                    id="loan-rate"
-                    placeholder="10"
-                    value="10"
-                    step="0.1"
-                  />
-                </div>
-                <div class="fin-field">
-                  <label>Tenor (Bulan)</label>
-                  <input
-                    type="number"
-                    id="loan-term"
-                    placeholder="60"
-                    value="60"
-                  />
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcLoan()">
-                Hitung Angsuran
-              </button>
-              <div class="fin-result" id="loan-result"></div>
-            </div>
-
-            <!-- Compound Interest -->
-            <div class="fin-panel" id="fin-compound">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Modal Awal (Rp)</label>
-                  <input type="number" id="ci-principal" value="10000000" />
-                </div>
-                <div class="fin-field">
-                  <label>Bunga per Tahun (%)</label>
-                  <input type="number" id="ci-rate" value="8" step="0.1" />
-                </div>
-                <div class="fin-field">
-                  <label>Periode (Tahun)</label>
-                  <input type="number" id="ci-years" value="10" />
-                </div>
-                <div class="fin-field">
-                  <label>Frekuensi Bunga / Tahun</label>
-                  <select id="ci-freq">
-                    <option value="1">Tahunan</option>
-                    <option value="2">Semi-Tahunan</option>
-                    <option value="4">Kuartalan</option>
-                    <option value="12" selected>Bulanan</option>
-                    <option value="365">Harian</option>
-                  </select>
-                </div>
-                <div class="fin-field">
-                  <label>Setoran Rutin / Periode (Rp)</label>
-                  <input type="number" id="ci-deposit" value="500000" />
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcCompound()">
-                Hitung Investasi
-              </button>
-              <div class="fin-result" id="compound-result"></div>
-            </div>
-
-            <!-- ROI -->
-            <div class="fin-panel" id="fin-roi">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Nilai Investasi Awal (Rp)</label>
-                  <input type="number" id="roi-initial" value="10000000" />
-                </div>
-                <div class="fin-field">
-                  <label>Nilai Investasi Akhir (Rp)</label>
-                  <input type="number" id="roi-final" value="15000000" />
-                </div>
-                <div class="fin-field">
-                  <label>Durasi (Tahun)</label>
-                  <input type="number" id="roi-years" value="3" />
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcROI()">Hitung ROI</button>
-              <div class="fin-result" id="roi-result"></div>
-            </div>
-
-            <!-- Discount -->
-            <div class="fin-panel" id="fin-discount">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Harga Asli (Rp)</label>
-                  <input type="number" id="disc-original" value="500000" />
-                </div>
-                <div class="fin-field">
-                  <label>Diskon (%)</label>
-                  <input
-                    type="number"
-                    id="disc-percent"
-                    value="20"
-                    step="0.1"
-                  />
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcDiscount()">
-                Hitung Diskon
-              </button>
-              <div class="fin-result" id="discount-result"></div>
-            </div>
-
-            <!-- Tax PPN -->
-            <div class="fin-panel" id="fin-tax">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Harga Sebelum Pajak (Rp)</label>
-                  <input type="number" id="tax-before" value="1000000" />
-                </div>
-                <div class="fin-field">
-                  <label>Tarif PPN (%)</label>
-                  <input type="number" id="tax-rate" value="11" step="0.1" />
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcTax()">Hitung Pajak</button>
-              <div class="fin-result" id="tax-result"></div>
-            </div>
-
-            <!-- BMI -->
-            <div class="fin-panel" id="fin-bmi">
-              <div class="fin-grid">
-                <div class="fin-field">
-                  <label>Berat Badan (kg)</label>
-                  <input type="number" id="bmi-weight" value="70" step="0.1" />
-                </div>
-                <div class="fin-field">
-                  <label>Tinggi Badan (cm)</label>
-                  <input type="number" id="bmi-height" value="170" step="0.1" />
-                </div>
-                <div class="fin-field">
-                  <label>Usia (Tahun)</label>
-                  <input type="number" id="bmi-age" value="25" />
-                </div>
-                <div class="fin-field">
-                  <label>Jenis Kelamin</label>
-                  <select id="bmi-gender">
-                    <option value="male">Laki-laki</option>
-                    <option value="female">Perempuan</option>
-                  </select>
-                </div>
-              </div>
-              <button class="calc-btn" onclick="calcBMI()">Hitung BMI</button>
-              <div class="fin-result" id="bmi-result"></div>
-            </div>
-          </div>
-        </section>
-      </main>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="pct-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#818cf8"/>
+              <stop offset="100%" stop-color="#6366f1"/>
+            </linearGradient>
+          </defs>
+          <circle cx="10" cy="10" r="4.5" fill="url(#pct-grad)"/>
+          <circle cx="22" cy="22" r="4.5" fill="url(#pct-grad)"/>
+          <line x1="6" y1="26" x2="26" y2="6" stroke="url(#pct-grad)" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text">
+        <span class="brand-name">JBCalc</span>
+        <span class="brand-sub">by Jayshifa Banyuwana</span>
+      </div>
     </div>
 
-    <!-- Toast Notification -->
-    <div class="toast" id="toast"></div>
+    <nav class="nav-menu">
+      <div class="nav-section-label" data-i18n="nav_tools">TOOLS</div>
+      <button class="nav-item active" data-tab="standard" onclick="switchTab('standard',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-calculator"></i></span>
+        <span data-i18n="nav_standard">Standard</span>
+        <span class="nav-badge">BASIC</span>
+      </button>
+      <button class="nav-item" data-tab="scientific" onclick="switchTab('scientific',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-square-root-alt"></i></span>
+        <span data-i18n="nav_scientific">Scientific</span>
+        <span class="nav-badge nav-badge-pro">PRO</span>
+      </button>
+      <button class="nav-item" data-tab="programmer" onclick="switchTab('programmer',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-code"></i></span>
+        <span data-i18n="nav_programmer">Programmer</span>
+        <span class="nav-badge nav-badge-new">NEW</span>
+      </button>
 
-    <script src="scripts/app.js"></script>
-    <script src="scripts/currency.js"></script>
-    <script src="scripts/units.js"></script>
-    <script src="scripts/finance.js"></script>
-    <script src="scripts/particles.js"></script>
-  </body>
+      <div class="nav-section-label" data-i18n="nav_convert">CONVERT</div>
+      <button class="nav-item" data-tab="currency" onclick="switchTab('currency',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-coins"></i></span>
+        <span data-i18n="nav_currency">Mata Uang</span>
+      </button>
+      <button class="nav-item" data-tab="unit" onclick="switchTab('unit',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-exchange-alt"></i></span>
+        <span data-i18n="nav_unit">Konversi Unit</span>
+      </button>
+
+      <div class="nav-section-label" data-i18n="nav_finance">FINANCE</div>
+      <button class="nav-item" data-tab="finance" onclick="switchTab('finance',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-chart-line"></i></span>
+        <span data-i18n="nav_finance_calc">Finansial</span>
+      </button>
+      <button class="nav-item" data-tab="zakat" onclick="switchTab('zakat',this)">
+        <span class="nav-icon-wrap"><i class="fas fa-star-and-crescent"></i></span>
+        <span data-i18n="nav_zakat">Kalkulator Zakat</span>
+        <span class="nav-badge nav-badge-new">NEW</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-divider"></div>
+
+    <div class="sidebar-settings">
+      <div class="settings-row">
+        <span class="settings-label"><i class="fas fa-globe"></i> <span data-i18n="settings_lang">Bahasa</span></span>
+        <select id="lang-select" onchange="setLanguage(this.value)" class="settings-select">
+          <option value="id">🇮🇩 Indonesia</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="ja">🇯🇵 日本語</option>
+          <option value="ko">🇰🇷 한국어</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="fr">🇫🇷 Français</option>
+          <option value="de">🇩🇪 Deutsch</option>
+        </select>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label"><i class="fas fa-palette"></i> <span data-i18n="settings_theme">Tema</span></span>
+        <button class="theme-toggle-btn" id="themeBtn" onclick="toggleTheme()">
+          <span class="theme-thumb"></span>
+        </button>
+      </div>
+      <div class="settings-row">
+        <span class="settings-label"><i class="fas fa-history"></i> <span data-i18n="settings_history">Riwayat</span></span>
+        <button class="history-open-btn" onclick="toggleHistoryPanel()"><i class="fas fa-clock-rotate-left"></i></button>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <div class="dev-card">
+        <div class="dev-avatar">JB</div>
+        <div class="dev-info">
+          <div class="dev-name">Jayshifa Banyuwana</div>
+          <div class="dev-links">
+            <a href="https://wa.me/qr/76WJORPVV2IDM1" target="_blank" class="dev-link dev-wa"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://instagram.com/jbanyu1a_" target="_blank" class="dev-link dev-ig"><i class="fab fa-instagram"></i></a>
+            <a href="mailto:jayshifabanyuwana@gmail.com" class="dev-link dev-mail"><i class="fas fa-envelope"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+  <div class="main-wrap">
+    <header class="topbar">
+      <button class="topbar-menu" onclick="toggleSidebar()" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <div class="topbar-title" id="topbarTitle">Standard Calculator</div>
+      <div class="topbar-actions">
+        <button class="topbar-action" onclick="toggleHistoryPanel()" title="History"><i class="fas fa-history"></i></button>
+        <button class="topbar-action" onclick="toggleTheme()" id="topbarTheme" title="Theme"><i class="fas fa-moon"></i></button>
+      </div>
+    </header>
+
+    <main class="main-content">
+
+      <section class="tab-panel active" id="tab-standard">
+        <div class="calc-container">
+          <div class="calc-display-wrap">
+            <div class="display-expr" id="std-expr"></div>
+            <div class="display-main" id="std-display">0</div>
+            <div class="display-meta">
+              <span class="mem-indicator" id="std-mem-ind" style="display:none">M</span>
+              <span class="display-hint" id="std-hint"></span>
+            </div>
+          </div>
+          <div class="keypad-grid keypad-std">
+            <button class="key key-fn" onclick="stdAction('percent')">%</button>
+            <button class="key key-fn" onclick="stdAction('ce')" data-i18n-btn="ce">CE</button>
+            <button class="key key-fn" onclick="stdAction('clear')" data-i18n-btn="c">C</button>
+            <button class="key key-op" onclick="stdAction('backspace')"><i class="fas fa-delete-left"></i></button>
+            <button class="key key-fn" onclick="stdAction('inv')">¹/x</button>
+            <button class="key key-fn" onclick="stdAction('sq')">x²</button>
+            <button class="key key-fn" onclick="stdAction('sqrt')">√</button>
+            <button class="key key-op" onclick="stdAction('op','÷')">÷</button>
+            <button class="key key-num" onclick="stdAction('num','7')">7</button>
+            <button class="key key-num" onclick="stdAction('num','8')">8</button>
+            <button class="key key-num" onclick="stdAction('num','9')">9</button>
+            <button class="key key-op" onclick="stdAction('op','×')">×</button>
+            <button class="key key-num" onclick="stdAction('num','4')">4</button>
+            <button class="key key-num" onclick="stdAction('num','5')">5</button>
+            <button class="key key-num" onclick="stdAction('num','6')">6</button>
+            <button class="key key-op" onclick="stdAction('op','−')">−</button>
+            <button class="key key-num" onclick="stdAction('num','1')">1</button>
+            <button class="key key-num" onclick="stdAction('num','2')">2</button>
+            <button class="key key-num" onclick="stdAction('num','3')">3</button>
+            <button class="key key-op" onclick="stdAction('op','+')">+</button>
+            <button class="key key-fn" onclick="stdAction('sign')">+/−</button>
+            <button class="key key-num key-zero" onclick="stdAction('num','0')">0</button>
+            <button class="key key-fn" onclick="stdAction('dot')">.</button>
+            <button class="key key-eq" onclick="stdAction('equal')">=</button>
+          </div>
+          <div class="memory-strip">
+            <button class="mem-btn" onclick="stdMemory('MC')">MC</button>
+            <button class="mem-btn" onclick="stdMemory('MR')">MR</button>
+            <button class="mem-btn" onclick="stdMemory('M+')">M+</button>
+            <button class="mem-btn" onclick="stdMemory('M-')">M−</button>
+            <button class="mem-btn" onclick="stdMemory('MS')">MS</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-scientific">
+        <div class="calc-container calc-sci-container">
+          <div class="calc-display-wrap">
+            <div class="display-expr" id="sci-expr"></div>
+            <div class="display-main" id="sci-display">0</div>
+            <div class="display-meta">
+              <div class="angle-btns">
+                <button class="angle-btn active" id="btn-deg" onclick="setAngleMode('DEG')">DEG</button>
+                <button class="angle-btn" id="btn-rad" onclick="setAngleMode('RAD')">RAD</button>
+                <button class="angle-btn" id="btn-grad" onclick="setAngleMode('GRAD')">GRAD</button>
+              </div>
+            </div>
+          </div>
+          <div class="keypad-grid keypad-sci">
+            <button class="key key-fn key-2nd" id="btn-2nd" onclick="toggle2nd()">2nd</button>
+            <button class="key key-fn" onclick="sciAction('pi')">π</button>
+            <button class="key key-fn" onclick="sciAction('e')">e</button>
+            <button class="key key-fn" onclick="sciStd('clear')">C</button>
+            <button class="key key-op" onclick="sciStd('backspace')"><i class="fas fa-delete-left"></i></button>
+            <button class="key key-fn" id="sci-sin" onclick="sciAction('sin')">sin</button>
+            <button class="key key-fn" id="sci-cos" onclick="sciAction('cos')">cos</button>
+            <button class="key key-fn" id="sci-tan" onclick="sciAction('tan')">tan</button>
+            <button class="key key-fn" onclick="sciAction('factorial')">n!</button>
+            <button class="key key-op" onclick="sciStd('op','÷')">÷</button>
+            <button class="key key-fn" id="sci-log" onclick="sciAction('log')">log</button>
+            <button class="key key-fn" id="sci-ln" onclick="sciAction('ln')">ln</button>
+            <button class="key key-fn" onclick="sciAction('pow')">xʸ</button>
+            <button class="key key-fn" onclick="sciAction('cbrt')">∛x</button>
+            <button class="key key-op" onclick="sciStd('op','×')">×</button>
+            <button class="key key-num" onclick="sciStd('num','7')">7</button>
+            <button class="key key-num" onclick="sciStd('num','8')">8</button>
+            <button class="key key-num" onclick="sciStd('num','9')">9</button>
+            <button class="key key-fn" onclick="sciAction('abs')">|x|</button>
+            <button class="key key-op" onclick="sciStd('op','−')">−</button>
+            <button class="key key-num" onclick="sciStd('num','4')">4</button>
+            <button class="key key-num" onclick="sciStd('num','5')">5</button>
+            <button class="key key-num" onclick="sciStd('num','6')">6</button>
+            <button class="key key-fn" onclick="sciAction('exp10')">10ˣ</button>
+            <button class="key key-op" onclick="sciStd('op','+')">+</button>
+            <button class="key key-num" onclick="sciStd('num','1')">1</button>
+            <button class="key key-num" onclick="sciStd('num','2')">2</button>
+            <button class="key key-num" onclick="sciStd('num','3')">3</button>
+            <button class="key key-fn" onclick="sciStd('sq')">x²</button>
+            <button class="key key-eq" onclick="sciStd('equal')" style="grid-row:span 2">=</button>
+            <button class="key key-fn" onclick="sciStd('sign')">+/−</button>
+            <button class="key key-num" onclick="sciStd('num','0')">0</button>
+            <button class="key key-fn" onclick="sciStd('dot')">.</button>
+            <button class="key key-fn" onclick="sciStd('percent')">%</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-programmer">
+        <div class="content-card">
+          <div class="card-head">
+            <h2 data-i18n="prog_title">Programmer Calculator</h2>
+            <p class="card-sub" data-i18n="prog_sub">Konversi basis bilangan & operasi bitwise</p>
+          </div>
+          <div class="prog-display-area">
+            <div class="prog-bases">
+              <div class="prog-base-row" id="pb-hex">
+                <span class="pb-label">HEX</span>
+                <span class="pb-value" id="prog-hex">0</span>
+                <button class="pb-copy" onclick="copyBase('hex')" title="Copy"><i class="fas fa-copy"></i></button>
+              </div>
+              <div class="prog-base-row active" id="pb-dec">
+                <span class="pb-label">DEC</span>
+                <input class="pb-input" id="prog-dec" type="text" value="0" oninput="progFromDec()" placeholder="0"/>
+                <button class="pb-copy" onclick="copyBase('dec')" title="Copy"><i class="fas fa-copy"></i></button>
+              </div>
+              <div class="prog-base-row" id="pb-oct">
+                <span class="pb-label">OCT</span>
+                <span class="pb-value" id="prog-oct">0</span>
+                <button class="pb-copy" onclick="copyBase('oct')" title="Copy"><i class="fas fa-copy"></i></button>
+              </div>
+              <div class="prog-base-row" id="pb-bin">
+                <span class="pb-label">BIN</span>
+                <span class="pb-value" id="prog-bin">0</span>
+                <button class="pb-copy" onclick="copyBase('bin')" title="Copy"><i class="fas fa-copy"></i></button>
+              </div>
+            </div>
+            <div class="bit-visualizer" id="bit-viz"></div>
+          </div>
+          <div class="prog-ops-grid">
+            <button class="prog-op-btn" onclick="progBitOp('AND')">AND</button>
+            <button class="prog-op-btn" onclick="progBitOp('OR')">OR</button>
+            <button class="prog-op-btn" onclick="progBitOp('XOR')">XOR</button>
+            <button class="prog-op-btn" onclick="progBitOp('NOT')">NOT</button>
+            <button class="prog-op-btn" onclick="progBitOp('LSHIFT')">« SHL</button>
+            <button class="prog-op-btn" onclick="progBitOp('RSHIFT')">» SHR</button>
+          </div>
+          <div class="prog-keypad">
+            <button class="key key-fn prog-hex-key" onclick="progInput('A')">A</button>
+            <button class="key key-fn prog-hex-key" onclick="progInput('B')">B</button>
+            <button class="key key-fn prog-hex-key" onclick="progInput('C')">C</button>
+            <button class="key key-fn prog-hex-key" onclick="progInput('D')">D</button>
+            <button class="key key-fn prog-hex-key" onclick="progInput('E')">E</button>
+            <button class="key key-fn prog-hex-key" onclick="progInput('F')">F</button>
+            <button class="key key-num" onclick="progInput('7')">7</button>
+            <button class="key key-num" onclick="progInput('8')">8</button>
+            <button class="key key-num" onclick="progInput('9')">9</button>
+            <button class="key key-op" onclick="progClear()">C</button>
+            <button class="key key-op" onclick="progBackspace()"><i class="fas fa-delete-left"></i></button>
+            <button class="key key-num" onclick="progInput('4')">4</button>
+            <button class="key key-num" onclick="progInput('5')">5</button>
+            <button class="key key-num" onclick="progInput('6')">6</button>
+            <button class="key key-num" onclick="progInput('1')">1</button>
+            <button class="key key-num" onclick="progInput('2')">2</button>
+            <button class="key key-num" onclick="progInput('3')">3</button>
+            <button class="key key-num prog-zero-key" onclick="progInput('0')">0</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-currency">
+        <div class="content-card">
+          <div class="card-head">
+            <h2 data-i18n="cur_title">Konversi Mata Uang</h2>
+            <div class="rate-status-pill">
+              <span class="rate-dot" id="rate-dot"></span>
+              <span id="rate-status">Loading...</span>
+            </div>
+          </div>
+          <div id="rate-info-bar" class="rate-info-bar"></div>
+          <div class="converter-row">
+            <div class="conv-field">
+              <label data-i18n="cur_amount">Jumlah</label>
+              <input type="number" id="cur-amount" value="1" oninput="convertCurrency()" class="conv-input"/>
+            </div>
+            <div class="conv-field">
+              <label data-i18n="cur_from">Dari</label>
+              <select id="cur-from" onchange="convertCurrency()" class="conv-select">
+                <option value="USD">🇺🇸 USD — US Dollar</option>
+                <option value="IDR" selected>🇮🇩 IDR — Rupiah</option>
+                <option value="EUR">🇪🇺 EUR — Euro</option>
+                <option value="GBP">🇬🇧 GBP — Pound Sterling</option>
+                <option value="JPY">🇯🇵 JPY — Yen</option>
+                <option value="SGD">🇸🇬 SGD — Sing. Dollar</option>
+                <option value="MYR">🇲🇾 MYR — Ringgit</option>
+                <option value="AUD">🇦🇺 AUD — Aust. Dollar</option>
+                <option value="CNY">🇨🇳 CNY — Yuan</option>
+                <option value="KRW">🇰🇷 KRW — Won</option>
+                <option value="SAR">🇸🇦 SAR — Riyal</option>
+                <option value="AED">🇦🇪 AED — Dirham</option>
+                <option value="THB">🇹🇭 THB — Baht</option>
+                <option value="BTC">₿ BTC — Bitcoin</option>
+                <option value="ETH">Ξ ETH — Ethereum</option>
+              </select>
+            </div>
+            <button class="swap-circle-btn" onclick="swapCurrency()" title="Swap"><i class="fas fa-right-left"></i></button>
+            <div class="conv-field">
+              <label data-i18n="cur_to">Ke</label>
+              <select id="cur-to" onchange="convertCurrency()" class="conv-select">
+                <option value="USD" selected>🇺🇸 USD — US Dollar</option>
+                <option value="IDR">🇮🇩 IDR — Rupiah</option>
+                <option value="EUR">🇪🇺 EUR — Euro</option>
+                <option value="GBP">🇬🇧 GBP — Pound Sterling</option>
+                <option value="JPY">🇯🇵 JPY — Yen</option>
+                <option value="SGD">🇸🇬 SGD — Sing. Dollar</option>
+                <option value="MYR">🇲🇾 MYR — Ringgit</option>
+                <option value="AUD">🇦🇺 AUD — Aust. Dollar</option>
+                <option value="CNY">🇨🇳 CNY — Yuan</option>
+                <option value="KRW">🇰🇷 KRW — Won</option>
+                <option value="SAR">🇸🇦 SAR — Riyal</option>
+                <option value="AED">🇦🇪 AED — Dirham</option>
+                <option value="THB">🇹🇭 THB — Baht</option>
+                <option value="BTC">₿ BTC — Bitcoin</option>
+                <option value="ETH">Ξ ETH — Ethereum</option>
+              </select>
+            </div>
+          </div>
+          <div class="result-hero" id="cur-result">–</div>
+          <div class="rate-grid" id="rate-grid"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-unit">
+        <div class="content-card">
+          <div class="card-head">
+            <h2 data-i18n="unit_title">Konversi Satuan</h2>
+            <p class="card-sub" data-i18n="unit_sub">10 kategori konversi lengkap</p>
+          </div>
+          <div class="cat-scroll-wrap">
+            <div class="cat-pills" id="cat-pills">
+              <button class="cat-pill active" onclick="setUnitCat('temperature',this)">🌡 Suhu</button>
+              <button class="cat-pill" onclick="setUnitCat('length',this)">📏 Panjang</button>
+              <button class="cat-pill" onclick="setUnitCat('weight',this)">⚖ Berat</button>
+              <button class="cat-pill" onclick="setUnitCat('volume',this)">🧪 Volume</button>
+              <button class="cat-pill" onclick="setUnitCat('area',this)">⬛ Luas</button>
+              <button class="cat-pill" onclick="setUnitCat('speed',this)">💨 Kecepatan</button>
+              <button class="cat-pill" onclick="setUnitCat('data',this)">💾 Data</button>
+              <button class="cat-pill" onclick="setUnitCat('time',this)">⏱ Waktu</button>
+              <button class="cat-pill" onclick="setUnitCat('energy',this)">⚡ Energi</button>
+              <button class="cat-pill" onclick="setUnitCat('pressure',this)">🔵 Tekanan</button>
+            </div>
+          </div>
+          <div class="converter-row">
+            <div class="conv-field">
+              <label data-i18n="unit_value">Nilai</label>
+              <input type="number" id="unit-amount" value="1" oninput="convertUnit()" class="conv-input"/>
+            </div>
+            <div class="conv-field">
+              <label data-i18n="unit_from">Dari</label>
+              <select id="unit-from" onchange="convertUnit()" class="conv-select"></select>
+            </div>
+            <button class="swap-circle-btn" onclick="swapUnit()"><i class="fas fa-right-left"></i></button>
+            <div class="conv-field">
+              <label data-i18n="unit_to">Ke</label>
+              <select id="unit-to" onchange="convertUnit()" class="conv-select"></select>
+            </div>
+          </div>
+          <div class="result-hero" id="unit-result">–</div>
+          <div class="formula-badge" id="unit-formula"></div>
+          <div class="unit-table-head" id="unit-table-title"></div>
+          <div class="unit-chips-grid" id="unit-table"></div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-finance">
+        <div class="content-card">
+          <div class="card-head">
+            <h2 data-i18n="fin_title">Kalkulator Finansial</h2>
+            <p class="card-sub" data-i18n="fin_sub">Investasi, Kredit, Pajak & Kesehatan</p>
+          </div>
+          <div class="fin-tab-scroll">
+            <div class="fin-tabs">
+              <button class="fin-tab active" onclick="setFinTab('loan',this)"><i class="fas fa-home"></i> <span data-i18n="fin_loan">KPR/Kredit</span></button>
+              <button class="fin-tab" onclick="setFinTab('compound',this)"><i class="fas fa-chart-bar"></i> <span data-i18n="fin_compound">Bunga Majemuk</span></button>
+              <button class="fin-tab" onclick="setFinTab('roi',this)"><i class="fas fa-trophy"></i> ROI</button>
+              <button class="fin-tab" onclick="setFinTab('discount',this)"><i class="fas fa-tag"></i> <span data-i18n="fin_discount">Diskon</span></button>
+              <button class="fin-tab" onclick="setFinTab('tax',this)"><i class="fas fa-file-invoice"></i> PPN</button>
+              <button class="fin-tab" onclick="setFinTab('bmi',this)"><i class="fas fa-weight-scale"></i> BMI</button>
+            </div>
+          </div>
+
+          <div class="fin-panel active" id="fin-loan">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="loan_amount">Jumlah Pinjaman (Rp)</label><input type="number" id="loan-amount" value="500000000"/></div>
+              <div class="fin-field"><label data-i18n="loan_rate">Suku Bunga / Tahun (%)</label><input type="number" id="loan-rate" value="10" step="0.1"/></div>
+              <div class="fin-field"><label data-i18n="loan_term">Tenor (Bulan)</label><input type="number" id="loan-term" value="60"/></div>
+            </div>
+            <button class="action-btn" onclick="calcLoan()"><i class="fas fa-calculator"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="loan-result"></div>
+          </div>
+
+          <div class="fin-panel" id="fin-compound">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="ci_principal">Modal Awal (Rp)</label><input type="number" id="ci-principal" value="10000000"/></div>
+              <div class="fin-field"><label data-i18n="ci_rate">Bunga / Tahun (%)</label><input type="number" id="ci-rate" value="8" step="0.1"/></div>
+              <div class="fin-field"><label data-i18n="ci_years">Periode (Tahun)</label><input type="number" id="ci-years" value="10"/></div>
+              <div class="fin-field"><label data-i18n="ci_freq">Frekuensi</label>
+                <select id="ci-freq"><option value="1">Tahunan</option><option value="2">Semi-Tahunan</option><option value="4">Kuartalan</option><option value="12" selected>Bulanan</option><option value="365">Harian</option></select>
+              </div>
+              <div class="fin-field"><label data-i18n="ci_deposit">Setoran Rutin (Rp)</label><input type="number" id="ci-deposit" value="500000"/></div>
+            </div>
+            <button class="action-btn" onclick="calcCompound()"><i class="fas fa-calculator"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="compound-result"></div>
+          </div>
+
+          <div class="fin-panel" id="fin-roi">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="roi_initial">Investasi Awal (Rp)</label><input type="number" id="roi-initial" value="10000000"/></div>
+              <div class="fin-field"><label data-i18n="roi_final">Nilai Akhir (Rp)</label><input type="number" id="roi-final" value="15000000"/></div>
+              <div class="fin-field"><label data-i18n="roi_years">Durasi (Tahun)</label><input type="number" id="roi-years" value="3"/></div>
+            </div>
+            <button class="action-btn" onclick="calcROI()"><i class="fas fa-calculator"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="roi-result"></div>
+          </div>
+
+          <div class="fin-panel" id="fin-discount">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="disc_orig">Harga Asli (Rp)</label><input type="number" id="disc-original" value="500000"/></div>
+              <div class="fin-field"><label data-i18n="disc_pct">Diskon (%)</label><input type="number" id="disc-percent" value="20" step="0.1"/></div>
+            </div>
+            <button class="action-btn" onclick="calcDiscount()"><i class="fas fa-tag"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="discount-result"></div>
+          </div>
+
+          <div class="fin-panel" id="fin-tax">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="tax_before">Harga Sebelum Pajak (Rp)</label><input type="number" id="tax-before" value="1000000"/></div>
+              <div class="fin-field"><label data-i18n="tax_rate">Tarif PPN (%)</label><input type="number" id="tax-rate" value="11" step="0.1"/></div>
+            </div>
+            <button class="action-btn" onclick="calcTax()"><i class="fas fa-file-invoice-dollar"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="tax-result"></div>
+          </div>
+
+          <div class="fin-panel" id="fin-bmi">
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="bmi_weight">Berat Badan (kg)</label><input type="number" id="bmi-weight" value="70" step="0.1"/></div>
+              <div class="fin-field"><label data-i18n="bmi_height">Tinggi Badan (cm)</label><input type="number" id="bmi-height" value="170" step="0.1"/></div>
+              <div class="fin-field"><label data-i18n="bmi_age">Usia</label><input type="number" id="bmi-age" value="25"/></div>
+              <div class="fin-field"><label data-i18n="bmi_gender">Jenis Kelamin</label>
+                <select id="bmi-gender"><option value="male">Laki-laki</option><option value="female">Perempuan</option></select>
+              </div>
+            </div>
+            <button class="action-btn" onclick="calcBMI()"><i class="fas fa-heart-pulse"></i> <span data-i18n="btn_calc">Hitung</span></button>
+            <div class="fin-result-box" id="bmi-result"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="tab-zakat">
+        <div class="content-card">
+          <div class="card-head zakat-head">
+            <div class="zakat-ornament">
+              <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                <path d="M20 4L23.5 13H33L25.5 18.5L28.5 28L20 22.5L11.5 28L14.5 18.5L7 13H16.5L20 4Z" fill="url(#zg)"/>
+                <defs><linearGradient id="zg" x1="7" y1="4" x2="33" y2="28"><stop stop-color="#f59e0b"/><stop offset="1" stop-color="#d97706"/></linearGradient></defs>
+              </svg>
+            </div>
+            <div>
+              <h2 data-i18n="zakat_title">Kalkulator Zakat</h2>
+              <p class="card-sub" data-i18n="zakat_sub">Zakat Maal, Penghasilan & Fitrah</p>
+            </div>
+          </div>
+          <div class="zakat-tabs">
+            <button class="zakat-tab active" onclick="setZakatTab('maal',this)" data-i18n="zakat_maal">Zakat Maal</button>
+            <button class="zakat-tab" onclick="setZakatTab('income',this)" data-i18n="zakat_income">Zakat Penghasilan</button>
+            <button class="zakat-tab" onclick="setZakatTab('fitrah',this)" data-i18n="zakat_fitrah">Zakat Fitrah</button>
+          </div>
+
+          <div class="zakat-panel active" id="zakat-maal">
+            <div class="zakat-info-box">
+              <i class="fas fa-info-circle"></i>
+              <span data-i18n="zakat_maal_info">Nishab = 85 gram emas. Haul = 1 tahun. Tarif = 2,5%</span>
+            </div>
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="zakat_gold_price">Harga Emas / gram (Rp)</label><input type="number" id="z-gold-price" value="1050000" placeholder="1050000"/></div>
+              <div class="fin-field"><label data-i18n="zakat_total_wealth">Total Harta (Rp)</label><input type="number" id="z-wealth" value="100000000"/></div>
+            </div>
+            <button class="action-btn zakat-btn" onclick="calcZakatMaal()"><i class="fas fa-star-and-crescent"></i> <span data-i18n="btn_calc_zakat">Hitung Zakat</span></button>
+            <div class="fin-result-box" id="zakat-maal-result"></div>
+          </div>
+
+          <div class="zakat-panel" id="zakat-income">
+            <div class="zakat-info-box">
+              <i class="fas fa-info-circle"></i>
+              <span data-i18n="zakat_income_info">Nishab = 653 kg beras. Tarif = 2,5% (bulanan) atau 10% (hasil bumi)</span>
+            </div>
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="zakat_monthly_income">Penghasilan Bulanan (Rp)</label><input type="number" id="z-income" value="10000000"/></div>
+              <div class="fin-field"><label data-i18n="zakat_rice_price">Harga Beras / kg (Rp)</label><input type="number" id="z-rice" value="14000"/></div>
+            </div>
+            <button class="action-btn zakat-btn" onclick="calcZakatIncome()"><i class="fas fa-star-and-crescent"></i> <span data-i18n="btn_calc_zakat">Hitung Zakat</span></button>
+            <div class="fin-result-box" id="zakat-income-result"></div>
+          </div>
+
+          <div class="zakat-panel" id="zakat-fitrah">
+            <div class="zakat-info-box">
+              <i class="fas fa-info-circle"></i>
+              <span data-i18n="zakat_fitrah_info">3,5 liter atau 2,7 kg beras per jiwa. Dibayar sebelum Idul Fitri.</span>
+            </div>
+            <div class="fin-grid">
+              <div class="fin-field"><label data-i18n="zakat_num_people">Jumlah Jiwa</label><input type="number" id="z-people" value="4" min="1"/></div>
+              <div class="fin-field"><label data-i18n="zakat_rice_price2">Harga Beras / kg (Rp)</label><input type="number" id="z-rice2" value="14000"/></div>
+            </div>
+            <button class="action-btn zakat-btn" onclick="calcZakatFitrah()"><i class="fas fa-star-and-crescent"></i> <span data-i18n="btn_calc_zakat">Hitung Zakat</span></button>
+            <div class="fin-result-box" id="zakat-fitrah-result"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="history-panel" id="historyPanel">
+  <div class="history-panel-head">
+    <h3 data-i18n="history_title">Riwayat</h3>
+    <button class="history-clear-btn" onclick="clearHistory()" data-i18n="history_clear">Hapus Semua</button>
+    <button class="history-close-btn" onclick="toggleHistoryPanel()"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="history-list" id="historyList">
+    <div class="history-empty" data-i18n="history_empty">Belum ada riwayat</div>
+  </div>
+</div>
+<div class="history-backdrop" id="historyBackdrop" onclick="toggleHistoryPanel()"></div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="scripts/lang.js"></script>
+<script src="scripts/app.js"></script>
+<script src="scripts/currency.js"></script>
+<script src="scripts/units.js"></script>
+<script src="scripts/finance.js"></script>
+<script src="scripts/zakat.js"></script>
+<script src="scripts/programmer.js"></script>
+<script src="scripts/aurora.js"></script>
+</body>
 </html>
