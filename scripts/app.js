@@ -16,8 +16,12 @@ function switchTab(name, el) {
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   document.getElementById('tab-' + name).classList.add('active');
   el.classList.add('active');
-  const label = el.querySelector('span:not(.nav-icon-wrap):not(.nav-badge)');
-  if (label) document.getElementById('topbarTitle').textContent = label.textContent;
+  const topbarEl = document.getElementById('topbarTitle');
+  if (topbarEl) {
+    const titleKey = 'topbar_' + name;
+    const translated = t(titleKey);
+    topbarEl.textContent = (translated && translated !== titleKey) ? translated : (el.querySelector('span:not(.nav-icon-wrap):not(.nav-badge)')?.textContent || '');
+  }
   if (window.innerWidth <= 900) closeSidebar();
 }
 
@@ -91,16 +95,24 @@ function addHistory(expr, result) {
 function renderHistoryList() {
   const list = document.getElementById('historyList');
   if (historyData.length === 0) {
-    list.innerHTML = `<div class="history-empty">${t('history_empty')}</div>`;
+    list.innerHTML = '<div class="history-empty">' + t('history_empty') + '</div>';
     return;
   }
-  list.innerHTML = historyData.map((h, i) => `
-    <div class="history-item" onclick="useHistory(${i})">
-      <div class="history-item-expr">${h.expr}</div>
-      <div class="history-item-result">${h.result}</div>
-      <div class="history-item-time">${h.time}</div>
-    </div>
-  `).join('');
+  list.innerHTML = historyData.map(function(h, i) {
+    return '<div class="history-item">' +
+      '<div class="history-item-main" onclick="useHistory(' + i + ')">' +
+      '<div class="history-item-expr">' + h.expr + '</div>' +
+      '<div class="history-item-result">' + h.result + '</div>' +
+      '<div class="history-item-time">' + h.time + '</div>' +
+      '</div>' +
+      '<button class="history-item-del" onclick="deleteHistory(' + i + ')"><i class="fas fa-trash-alt"></i></button>' +
+      '</div>';
+  }).join('');
+}
+
+function deleteHistory(i) {
+  historyData.splice(i, 1);
+  renderHistoryList();
 }
 
 function useHistory(i) {
